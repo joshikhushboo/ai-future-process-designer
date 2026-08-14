@@ -1,32 +1,67 @@
 # AI Future Process Designer
 
-An AI-powered business process transformation application that analyzes existing business processes and identifies opportunities for AI, automation, and emerging technologies.
+An AI-powered business process transformation platform that analyzes current business processes and generates future-state process designs using AI, automation, and emerging technologies.
 
-## Overview
+The application allows a user to enter a **new business process live**, analyze it using Gemini AI, store the generated transformation data in MongoDB, establish relationships between process entities, and display the resulting future-state process through a React interface.
 
-The AI Future Process Designer helps organizations transform current business processes into future-state processes.
+---
 
-A user can:
+## 1. Project Overview
 
-* Create a business process
-* Define current activities
-* Define current process problems
-* Analyze the process using AI
-* Identify AI opportunities
-* Generate future-state activities
-* Define human/AI/system responsibilities
-* Estimate expected business benefits
-* Store relationships between process entities
+Traditional business-process analysis often requires manual identification of inefficiencies, automation opportunities, future activities, and expected benefits.
 
-The application follows the pipeline:
+The **AI Future Process Designer** automates this analysis.
 
-**Input → Backend Processing → AI Analysis → Storage → Relationships → Output**
+A user provides:
 
-## Key Features
+* Business process
+* Industry
+* Current activities
+* Current problems
 
-### 1. Process Creation
+The system then:
 
-Users can create a new business process by providing:
+1. Receives the process through the React frontend.
+2. Sends the data to the Node.js/Express backend.
+3. Retrieves the relevant process information from MongoDB.
+4. Sends structured process context to Gemini AI.
+5. Generates AI transformation recommendations.
+6. Validates and stores the AI-generated results.
+7. Builds relationships between process entities.
+8. Returns the transformed process to the frontend.
+9. Displays the future-state process, responsibilities, and benefits.
+
+### Core Pipeline
+
+```text
+Input
+  ↓
+Frontend
+  ↓
+Backend API
+  ↓
+Process Retrieval
+  ↓
+AI Analysis
+  ↓
+Structured AI Output
+  ↓
+MongoDB Storage
+  ↓
+Relationships
+  ↓
+Future Process
+  ↓
+React Output
+```
+
+---
+
+## 2. Main Features
+
+### Process Creation
+
+Users can create a new business process by entering:
 
 * Process name
 * Description
@@ -34,96 +69,75 @@ Users can create a new business process by providing:
 * Current activities
 * Current problems
 
-### 2. AI Process Analysis
+### Current Process Visualization
 
-The backend sends the process context to Google's Gemini model.
+The application displays the current process including:
 
-The AI identifies:
+* Activities
+* Sequence
+* Responsible entities
+* Existing problems
+* Problem severity
+
+### AI Process Analysis
+
+Gemini analyzes the current process and identifies:
 
 * AI opportunities
 * AI intervention types
-* Technologies that can be applied
-* Future activities
-* Automation levels
-* Responsibility types
-* Expected business benefits
-* Expected improvement metrics
+* Applicable technologies
+* Expected impact
+* Technology maturity
 
-### 3. Future Process Design
+### Future Process Generation
 
-AI-generated future activities describe how the process can operate after transformation.
+The system generates future-state activities including:
 
-Each activity contains:
-
-* Sequence
+* Activity name
 * Description
+* Sequence
 * Responsible type
 * Automation level
 * Change type
 
-### 4. Benefits Analysis
+### Responsibility Analysis
 
-The system identifies measurable business benefits such as:
+Future activities are classified according to responsibility:
 
-* Reduced processing time
-* Reduced operational cost
-* Improved inventory accuracy
-* Improved customer satisfaction
-* Improved shipping efficiency
+* Human
+* AI
+* System
+* Hybrid
 
-### 5. Relationship Modeling
+### Benefits Analysis
 
-The application supports relationships between:
+The system generates measurable business benefits containing:
 
-* Activities
-* Problems
-* AI opportunities
-* Roles
-* Systems
+* Benefit name
+* Description
+* Metric
+* Expected improvement
+* Impact level
 
-Relationship types include:
+### Relationship Modeling
 
-`LEADS_TO`, `CAUSES`, `SOLVES`, `PERFORMS`, `USES`, `AUTOMATES`, `REPLACES`, `SUPPORTS`
+The application supports relationships between process entities.
 
-## Architecture
+Examples include:
 
 ```text
-                    ┌─────────────────────┐
-                    │      React UI       │
-                    │   Process Designer  │
-                    └──────────┬──────────┘
-                               │
-                               │ REST API
-                               ▼
-                    ┌─────────────────────┐
-                    │   Node.js / Express │
-                    │      Backend        │
-                    └──────────┬──────────┘
-                               │
-                ┌──────────────┼──────────────┐
-                │              │              │
-                ▼              ▼              ▼
-        ┌────────────┐ ┌──────────────┐ ┌──────────────┐
-        │  MongoDB   │ │ Gemini AI    │ │ Controllers  │
-        │  Database  │ │   Service    │ │ / Services   │
-        └────────────┘ └──────────────┘ └──────────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │ AI Analysis Results │
-                    │ Opportunities       │
-                    │ Future Activities   │
-                    │ Benefits            │
-                    └─────────────────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │       React UI      │
-                    │ Future Process View │
-                    └─────────────────────┘
+Problem → SOLVES → AI Opportunity
+
+AI Opportunity → AUTOMATES → Activity
+
+Activity → LEADS_TO → Activity
+
+AI Opportunity → SUPPORTS → Future Activity
 ```
 
-## Technology Stack
+---
+
+## 3. Technology Stack
 
 ### Frontend
 
@@ -137,24 +151,165 @@ Relationship types include:
 
 * Node.js
 * Express.js
-* MongoDB
-* Mongoose
 * REST APIs
+* Mongoose
+
+### Database
+
+* MongoDB
+* MongoDB Atlas
 
 ### AI
 
 * Google Gemini API
 * `@google/genai`
 
-### Development Tools
+### Development
 
 * Git
 * GitHub
 * VS Code
-* Postman
 * VS Code AI coding assistance
+* Postman
 
-## Database Model
+---
+
+## 4. System Architecture
+
+```text
+                         USER
+                           │
+                           ▼
+                 ┌───────────────────┐
+                 │   React Frontend  │
+                 │   Process Designer │
+                 └─────────┬─────────┘
+                           │
+                           │ REST API
+                           ▼
+                 ┌───────────────────┐
+                 │ Node.js + Express │
+                 │     Backend       │
+                 └─────────┬─────────┘
+                           │
+              ┌────────────┼────────────┐
+              │            │            │
+              ▼            ▼            ▼
+        ┌──────────┐ ┌────────────┐ ┌────────────┐
+        │ MongoDB  │ │ Gemini AI  │ │ Controllers│
+        │  Atlas   │ │   Service  │ │ & Services │
+        └──────────┘ └────────────┘ └────────────┘
+              │            │
+              │            │
+              └──────┬─────┘
+                     ▼
+             Structured AI Result
+                     │
+          ┌──────────┼──────────┐
+          ▼          ▼          ▼
+    Opportunities  Future     Benefits
+                   Process
+          │          │          │
+          └──────────┼──────────┘
+                     ▼
+               Relationships
+                     │
+                     ▼
+              React Process View
+```
+
+---
+
+## 5. AI Processing Architecture
+
+The AI analysis follows a structured pipeline.
+
+```text
+User Input
+    ↓
+Process Controller
+    ↓
+Process + Activities + Problems
+    ↓
+AI Service
+    ↓
+Gemini API
+    ↓
+Structured JSON
+    ↓
+Validation / Normalization
+    ↓
+MongoDB
+    ↓
+Future Process Designer
+```
+
+The AI is instructed to return structured JSON rather than free-form text.
+
+The generated structure contains:
+
+```text
+aiOpportunities
+futureActivities
+benefits
+```
+
+This allows the AI output to become application data rather than simply displaying an AI-generated paragraph.
+
+---
+
+## 6. AI Analysis Output
+
+### AI Opportunities
+
+Each opportunity contains information such as:
+
+```text
+Activity
+Title
+Description
+Technology
+Intervention Type
+Maturity
+Expected Impact
+```
+
+Supported intervention types include:
+
+* Prediction
+* Recommendation
+* Automation
+* Generation
+* Detection
+
+### Future Activities
+
+Each future activity contains:
+
+```text
+Name
+Description
+Sequence
+Responsible Type
+Automation Level
+Change Type
+```
+
+### Benefits
+
+Each benefit contains:
+
+```text
+Name
+Description
+Metric
+Expected Improvement
+Impact Level
+```
+
+---
+
+## 7. Database/Data Model
 
 The application uses MongoDB with Mongoose.
 
@@ -177,262 +332,181 @@ Process
    ├── Benefit
    │
    └── Relationship
+
+Role
+System
 ```
 
 ### Process
 
-Stores the main business process.
+Represents a business process.
+
+Important fields:
+
+```text
+name
+description
+industry
+status
+timestamps
+```
+
+### Industry
+
+Represents the industry associated with a process.
+
+Examples:
+
+* E-commerce
+* Healthcare
+* Banking
+* Manufacturing
 
 ### Activity
 
-Stores current-state process activities and their sequence.
+Represents an activity in the current process.
+
+Important fields:
+
+```text
+process
+name
+description
+sequence
+```
 
 ### Problem
 
-Stores problems or inefficiencies identified in the current process.
+Represents an existing problem or inefficiency.
+
+Important fields:
+
+```text
+process
+title
+description
+severity
+```
 
 ### AIOpportunity
 
-Stores AI transformation opportunities generated by Gemini.
+Stores AI-generated transformation opportunities.
+
+Important fields:
+
+```text
+process
+activity
+title
+description
+technology
+interventionType
+maturity
+expectedImpact
+```
 
 ### FutureActivity
 
-Stores the proposed future-state process activities.
+Stores AI-generated future-state activities.
+
+Important fields:
+
+```text
+process
+name
+description
+sequence
+responsibleType
+automationLevel
+changeType
+```
 
 ### Benefit
 
-Stores expected business benefits and improvement metrics.
+Stores expected business benefits.
+
+Important fields:
+
+```text
+process
+name
+description
+metric
+expectedImprovement
+impactLevel
+```
 
 ### Relationship
 
-Stores relationships between process entities.
-
-## AI Processing Flow
+Represents connections between process entities.
 
 ```text
-User creates process
-        ↓
-Process + Activities + Problems
-        ↓
-Backend retrieves process context
-        ↓
-Gemini AI analysis
-        ↓
-Structured JSON response
-        ↓
-Validate and normalize AI output
-        ↓
-Store AI Opportunities
-        ↓
-Store Future Activities
-        ↓
-Store Benefits
-        ↓
-Retrieve complete process designer data
-        ↓
-Display future-state process
+sourceType
+sourceId
+targetType
+targetId
+relationshipType
+condition
 ```
 
-The AI response is constrained to a structured JSON format so that generated information can be stored as application data rather than being displayed as unstructured text.
-
-## Sample Use Case
-
-### Input
-
-**Industry:** E-commerce
-
-**Process:** Order Fulfillment
-
-**Current activities:**
-
-1. Order placed
-2. Inventory verification
-
-**Current problem:**
-
-Manual inventory verification.
-
-### AI Transformation
-
-The system can identify:
-
-* Real-time inventory verification
-* Fraud detection
-* Smart warehouse allocation
-* Picking-path optimization
-* AI-assisted packing
-* Dynamic carrier selection
-* Proactive delivery prediction
-
-### Future State
-
-The result is stored as structured future activities and displayed through the process designer.
-
-## Environment Variables
-
-Create `backend/.env` locally:
-
-```env
-MONGODB_URI=your_mongodb_connection_string
-GEMINI_API_KEY=your_gemini_api_key
-PORT=5000
-```
-
-Never commit `.env` to GitHub.
-
-A safe template is provided as:
-
-`backend/.env.example`
-
-## Installation
-
-### Clone Repository
-
-```bash
-git clone https://github.com/joshikhushboo/ai-future-process-designer.git
-cd ai-future-process-designer
-```
-
-### Backend
-
-```bash
-cd backend
-npm install
-```
-
-Create `.env` and add the required environment variables.
-
-Start the backend:
-
-```bash
-npm run dev
-```
-
-The backend runs on:
+Supported relationship types include:
 
 ```text
-http://localhost:5000
+LEADS_TO
+CAUSES
+SOLVES
+PERFORMS
+USES
+AUTOMATES
+REPLACES
+SUPPORTS
+DECISION_TRUE
+DECISION_FALSE
 ```
 
-### Frontend
+---
 
-Open another terminal:
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-The frontend runs on the Vite development server.
-
-## API Flow
-
-### Create Process
-
-```text
-POST /api/processes
-```
-
-Creates a process together with its current activities and problems.
-
-### Get Process Designer
-
-```text
-GET /api/process-designer/:processId
-```
-
-Retrieves the complete process designer data.
-
-### Analyze Process
-
-```text
-POST /api/ai/analyze/:processId
-```
-
-Runs AI analysis and stores:
-
-* AI opportunities
-* Future activities
-* Benefits
-
-## Scalability Considerations
-
-The system separates the frontend, API layer, AI service, and database so that the AI processing layer can be scaled independently.
-
-For 1,000+ processes, the next production-scale improvements would include:
-
-* Background job queues for AI analysis
-* Redis/BullMQ for asynchronous processing
-* Rate limiting for AI API calls
-* Batch processing
-* Retry mechanisms
-* Caching
-* Database indexing
-* Pagination
-* AI result versioning
-* Horizontal backend scaling
-* Monitoring and logging
-
-Instead of processing thousands of AI requests synchronously through HTTP requests, production deployment should place AI analysis into background jobs and allow multiple workers to process the queue.
-
-## Sample / Synthetic Data
-
-The project uses synthetic business-process data for demonstration and testing.
-
-No production customer data is required.
-
-## Research Sources
-
-The project uses publicly available technical documentation and research material related to:
-
-* Business process management
-* AI automation
-* Process transformation
-* Generative AI
-* Google Gemini API
-* MongoDB
-* Mongoose
-* React
-* Node.js
-* Express
-
-Primary technical documentation should be consulted when reproducing or extending the project.
-
-## AI Coding Tool Disclosure
-
-AI coding assistance was used during development for debugging, code formatting, troubleshooting, and implementation assistance.
-
-The application architecture, feature requirements, data model decisions, integration flow, testing, debugging, and final implementation were reviewed and directed by the developer.
-
-## Model and Library Inventory
-
-| Technology        | Purpose             | License / Terms               |
-| ----------------- | ------------------- | ----------------------------- |
-| React             | Frontend UI         | MIT                           |
-| Vite              | Frontend build tool | MIT                           |
-| Node.js           | Backend runtime     | Open-source                   |
-| Express           | REST API framework  | MIT                           |
-| MongoDB           | Database            | Server-side licensing applies |
-| Mongoose          | MongoDB ODM         | MIT                           |
-| Axios             | HTTP client         | MIT                           |
-| Google Gemini API | AI analysis         | Google API Terms              |
-| `@google/genai`   | Gemini SDK          | Apache-2.0                    |
-
-Always verify the current licence and service terms before commercial redistribution.
-
-## Project Structure
+## 8. Project Structure
 
 ```text
 ai-future-process-designer/
 │
 ├── backend/
+│   │
 │   ├── src/
 │   │   ├── config/
+│   │   │   └── db.js
+│   │   │
 │   │   ├── controllers/
+│   │   │   ├── activity.controller.js
+│   │   │   ├── ai.controller.js
+│   │   │   ├── aiOpportunity.controller.js
+│   │   │   ├── benefit.controller.js
+│   │   │   ├── futureActivity.controller.js
+│   │   │   ├── industry.controller.js
+│   │   │   ├── problem.controller.js
+│   │   │   ├── process.controller.js
+│   │   │   ├── processDesigner.controller.js
+│   │   │   ├── relationship.controller.js
+│   │   │   ├── role.controller.js
+│   │   │   └── system.controller.js
+│   │   │
 │   │   ├── models/
+│   │   │   ├── activity.js
+│   │   │   ├── aiOpportunity.js
+│   │   │   ├── benefit.js
+│   │   │   ├── futureActivity.js
+│   │   │   ├── industry.js
+│   │   │   ├── problem.js
+│   │   │   ├── process.js
+│   │   │   ├── relationship.js
+│   │   │   ├── role.js
+│   │   │   └── system.js
+│   │   │
 │   │   ├── routes/
 │   │   ├── services/
+│   │   │   └── ai.service.js
+│   │   │
 │   │   ├── utils/
 │   │   ├── app.js
 │   │   └── server.js
@@ -442,56 +516,590 @@ ai-future-process-designer/
 │   └── package-lock.json
 │
 ├── frontend/
+│   │
 │   ├── src/
 │   │   ├── components/
+│   │   │   ├── BenefitsPanel.jsx
+│   │   │   ├── CurrentProcess.jsx
+│   │   │   ├── FutureProcess.jsx
+│   │   │   ├── ProcessForm.jsx
+│   │   │   ├── RelationshipPanel.jsx
+│   │   │   ├── ResponsibilityPanel.jsx
+│   │   │   └── TransitionPanel.jsx
+│   │   │
 │   │   ├── services/
+│   │   │   └── api.js
+│   │   │
 │   │   ├── App.jsx
 │   │   └── App.css
+│   │
 │   ├── package.json
 │   └── vite.config.js
 │
+├── .gitignore
 └── README.md
 ```
 
-## Future Improvements
+---
 
-Potential production enhancements include:
+## 9. API Endpoints
 
-* User authentication and RBAC
-* Multiple process management
+### Process
+
+```http
+POST /api/processes
+```
+
+Creates a new process.
+
+```http
+GET /api/processes
+```
+
+Retrieves processes.
+
+### Process Designer
+
+```http
+GET /api/process-designer/:processId
+```
+
+Retrieves the complete process designer data.
+
+### AI Analysis
+
+```http
+POST /api/ai/analyze/:processId
+```
+
+Runs AI analysis for a process.
+
+The endpoint:
+
+1. Retrieves the process.
+2. Retrieves current activities.
+3. Retrieves current problems.
+4. Sends context to Gemini.
+5. Receives structured AI output.
+6. Clears previous AI results.
+7. Saves AI opportunities.
+8. Saves future activities.
+9. Saves benefits.
+10. Returns the generated result.
+
+### Activities
+
+```http
+GET /api/activities
+POST /api/activities
+```
+
+### Problems
+
+```http
+GET /api/problems
+POST /api/problems
+```
+
+### AI Opportunities
+
+```http
+GET /api/ai-opportunities
+```
+
+### Future Activities
+
+```http
+GET /api/future-activities
+```
+
+### Benefits
+
+```http
+GET /api/benefits
+```
+
+### Relationships
+
+```http
+GET /api/relationships
+POST /api/relationships
+```
+
+---
+
+## 10. Environment Variables
+
+The backend requires environment variables.
+
+Create:
+
+```text
+backend/.env
+```
+
+Example:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+GEMINI_API_KEY=your_gemini_api_key
+PORT=5000
+```
+
+The real `.env` file must never be committed to GitHub.
+
+A safe template is provided:
+
+```text
+backend/.env.example
+```
+
+Example:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+GEMINI_API_KEY=your_gemini_api_key
+PORT=5000
+```
+
+---
+
+## 11. Installation and Setup
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/joshikhushboo/ai-future-process-designer.git
+
+cd ai-future-process-designer
+```
+
+---
+
+### Backend Setup
+
+```bash
+cd backend
+npm install
+```
+
+Create:
+
+```text
+backend/.env
+```
+
+Add:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+GEMINI_API_KEY=your_gemini_api_key
+PORT=5000
+```
+
+Start the backend:
+
+```bash
+npm run dev
+```
+
+Backend:
+
+```text
+http://localhost:5000
+```
+
+---
+
+### Frontend Setup
+
+Open another terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open the Vite URL shown in the terminal, normally:
+
+```text
+http://localhost:5173
+```
+
+---
+
+## 12. Example Input
+
+The application can accept a process such as:
+
+### Industry
+
+```text
+E-commerce
+```
+
+### Process
+
+```text
+Order Fulfillment
+```
+
+### Description
+
+```text
+The process of receiving, processing, packing,
+shipping and delivering customer orders.
+```
+
+### Current Activities
+
+```text
+1. Order Placed
+2. Inventory Verification
+```
+
+### Current Problem
+
+```text
+Manual inventory verification
+```
+
+The AI can then identify transformation opportunities such as:
+
+* Real-time inventory verification
+* Fraud detection
+* Smart warehouse allocation
+* Picking optimization
+* AI-assisted packing
+* Dynamic carrier selection
+* Proactive delivery tracking
+
+---
+
+## 13. Example AI Output
+
+A typical future-state process may contain:
+
+```text
+1. Order Placed
+2. Real-time Inventory & Payment Verification
+3. Smart Order Routing & Warehouse Allocation
+4. Automated Picking Path Optimization
+5. AI-Assisted Packing & Quality Control
+6. Dynamic Shipping Label & Carrier Selection
+7. Proactive Delivery Tracking
+8. Automated Post-Delivery Feedback
+```
+
+The generated information is stored in MongoDB and displayed in the application's future-process sections.
+
+---
+
+## 14. Sample / Synthetic Data
+
+The project uses synthetic business-process data for demonstration and testing.
+
+Example scenarios include:
+
+* E-commerce order fulfillment
+* Inventory verification
+* Warehouse operations
+* Shipping and delivery
+
+No real customer or confidential enterprise data is required.
+
+The application can also accept a new process entered during a live demonstration.
+
+---
+
+## 15. Scalability: 1,000 Processes
+
+A major design consideration is the ability to process a large number of business processes.
+
+The current prototype separates:
+
+```text
+Frontend
+Backend API
+AI Service
+Database
+```
+
+This allows the AI processing layer to be scaled independently.
+
+For 1,000 processes, production architecture should use asynchronous processing rather than keeping an HTTP request open for every AI analysis.
+
+A scalable architecture would be:
+
+```text
+                React
+                  │
+                  ▼
+             API Server
+                  │
+                  ▼
+              Job Queue
+                  │
+        ┌─────────┼─────────┐
+        ▼         ▼         ▼
+      AI Worker AI Worker AI Worker
+        │         │         │
+        └─────────┼─────────┘
+                  ▼
+               MongoDB
+```
+
+Potential production improvements include:
+
+* Redis
+* BullMQ
+* Background AI workers
+* Rate limiting
+* Retry mechanisms
+* Job status tracking
+* Database indexes
+* Pagination
+* Caching
+* Horizontal backend scaling
+* AI result versioning
+* Monitoring and logging
+
+The important principle is that **1,000 processes should not mean 1,000 simultaneous synchronous AI requests**.
+
+Instead, requests should enter a queue and be processed by scalable AI workers.
+
+---
+
+## 16. Error Handling
+
+The backend provides error handling for:
+
+* Missing process
+* Invalid process ID
+* Database failures
+* AI API failures
+* Invalid AI responses
+* Validation errors
+
+AI-generated fields are normalized where required before storing them in MongoDB.
+
+---
+
+## 17. Data Integrity
+
+The application uses Mongoose schemas to enforce:
+
+* Required fields
+* Enumerated values
+* MongoDB references
+* Data types
+* Timestamps
+
+AI output is also constrained to predefined structures and allowed values.
+
+This prevents the application from treating arbitrary AI text as database structure.
+
+---
+
+## 18. Security Considerations
+
+The current project is a demonstration/prototype application.
+
+Important production security requirements include:
+
+* Keep API keys server-side
+* Never expose Gemini credentials to React
+* Never commit `.env`
+* Validate incoming API requests
+* Add authentication and authorization
+* Add rate limiting
+* Sanitize user input
+* Add request logging
+* Restrict database access
+* Use HTTPS in production
+
+---
+
+## 19. Research and Technical Sources
+
+The project is based on concepts from:
+
+* Business Process Management
+* Business Process Transformation
+* AI-assisted automation
+* Generative AI
+* Process optimization
+* Human-AI collaboration
+
+Technical implementation references include the official documentation for:
+
+* React
+* Vite
+* Node.js
+* Express.js
+* MongoDB
+* Mongoose
+* Google Gemini API
+
+---
+
+## 20. Model and Library Inventory
+
+| Technology        | Purpose            | Licence / Terms         |
+| ----------------- | ------------------ | ----------------------- |
+| React             | Frontend UI        | MIT                     |
+| Vite              | Frontend tooling   | MIT                     |
+| Node.js           | Backend runtime    | Open-source             |
+| Express.js        | REST API framework | MIT                     |
+| Mongoose          | MongoDB ODM        | MIT                     |
+| MongoDB           | Database           | MongoDB licensing/terms |
+| Axios             | HTTP client        | MIT                     |
+| Google Gemini API | AI analysis        | Google API Terms        |
+| `@google/genai`   | Gemini SDK         | Apache-2.0              |
+
+Licensing and service terms should be rechecked against the current versions used in deployment.
+
+---
+
+## 21. AI Coding Tool Disclosure
+
+AI coding tools were used during development for:
+
+* Debugging
+* Code formatting
+* Troubleshooting
+* Implementation assistance
+* Identifying runtime errors
+* Improving development speed
+
+The developer personally designed and directed:
+
+* Application requirements
+* Overall architecture
+* Database entities
+* AI workflow
+* Frontend process flow
+* Backend API structure
+* AI analysis integration
+* Data storage flow
+* Testing and debugging
+* Final application behavior
+
+AI coding assistance was treated as a development aid rather than as a replacement for understanding the application's implementation.
+
+---
+
+## 22. Limitations
+
+The current version is a working prototype.
+
+Current limitations include:
+
+* AI processing is synchronous.
+* Authentication is not implemented.
+* Production-grade job queues are not implemented.
+* Advanced process visualization can be extended.
+* AI-generated recommendations require human validation before production use.
+* Large-scale deployment requires additional infrastructure.
+
+---
+
+## 23. Future Improvements
+
+Potential improvements include:
+
+* Authentication and RBAC
+* Multiple user organizations
 * Process versioning
+* Process approval workflows
 * Visual process graph
-* Background AI processing
 * AI analysis history
-* Human approval workflow
-* More industry templates
+* Background AI jobs
+* Redis/BullMQ integration
 * Advanced analytics
-* Export to PDF/Excel
-* Production cloud deployment
-* Automated testing and CI/CD
+* Process comparison
+* PDF/Excel export
+* Cloud deployment
+* CI/CD
+* Automated testing
+* Monitoring and observability
 
-## Demonstration Flow
+---
 
-For the live demonstration:
+## 24. Live Demonstration Flow
+
+The application can be demonstrated using an unseen process provided during evaluation.
+
+### Demonstration
 
 1. Open the application.
 2. Create a new business process.
-3. Enter a previously unseen process scenario.
-4. Add current activities.
-5. Add current problems.
-6. Submit the process.
-7. Click **Analyze Process with AI**.
-8. Show backend processing.
-9. Show Gemini analysis.
-10. Show stored AI opportunities.
-11. Show future activities.
-12. Show human/AI responsibilities.
-13. Show expected benefits.
-14. Show relationships.
-15. Explain how the architecture can scale to 1,000+ processes.
+3. Enter the process name and description.
+4. Select the industry.
+5. Add current activities.
+6. Add current problems.
+7. Create the process.
+8. Show the current-state process.
+9. Click **Analyze Process with AI**.
+10. Show the backend processing.
+11. Show Gemini analysis.
+12. Show AI opportunities.
+13. Show future activities.
+14. Show human/AI/system responsibilities.
+15. Show expected benefits.
+16. Show relationships.
+17. Explain the database storage.
+18. Explain how the architecture can scale to 1,000 processes.
 
-## Project Repository
+---
 
-GitHub:
+## 25. Evaluation Pipeline
+
+The complete application follows:
+
+```text
+LIVE INPUT
+    ↓
+React Frontend
+    ↓
+REST API
+    ↓
+Node.js / Express
+    ↓
+MongoDB Retrieval
+    ↓
+Gemini AI
+    ↓
+Structured AI Analysis
+    ↓
+Validation / Normalization
+    ↓
+MongoDB Storage
+    ↓
+Relationship Model
+    ↓
+Future Process
+    ↓
+React Output
+```
+
+This demonstrates that the application is not simply displaying prepared AI-generated content. The process is generated from runtime input and processed through the backend.
+
+---
+
+## 26. Repository
+
+GitHub repository:
 
 https://github.com/joshikhushboo/ai-future-process-designer
+
+---
+
+## 27. Author
+
+**Khushboo Joshi**
+
+Computer Science & Engineering — AI/ML
+
+This project was developed as an AI-powered business process transformation application demonstrating full-stack development, AI integration, structured data processing, and future-state process design.
